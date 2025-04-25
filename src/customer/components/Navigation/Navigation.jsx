@@ -390,7 +390,7 @@ export default function Navigation() {
                           cursor: "pointer",
                         }}
                       >
-                        R
+                        D
                       </Avatar>
                       
                       <Menu
