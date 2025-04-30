@@ -1,11 +1,10 @@
 import { Radio, RadioGroup } from "@headlessui/react";
-import { Box, Grid, LinearProgress, Rating } from "@mui/material";
+import { Avatar, LinearProgress, Rating } from "@mui/material";
 import { useState } from "react";
-import ProductReviewCard from "./ProductReviewCard";
 
 const product = {
   name: "Basic Tee 6-Pack",
-  price: "$192",
+  price: "₹192",
   href: "#",
   breadcrumbs: [
     { id: 1, name: "Men", href: "#" },
@@ -51,14 +50,44 @@ const product = {
   details:
     'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
 };
-const reviews = { href: "#", average: 4, totalCount: 117 };
+const ratingStats = {
+  total: 54890,
+  average: 4.5,
+  breakdown: {
+    Excellent: 60,
+    "Very Good": 20,
+    Good: 10,
+    Average: 7,
+    Poor: 3,
+  },
+};
+
+const reviews = [
+  {
+    name: "Raam",
+    date: "April 25, 2025",
+    rating: 4.5,
+    comment: "nice product, I love this shirt",
+  },
+  {
+    name: "Raam",
+    date: "April 25, 2025",
+    rating: 4.5,
+    comment: "nice product, I love this shirt",
+  },
+  {
+    name: "Raam",
+    date: "April 25, 2025",
+    rating: 4.5,
+    comment: "nice product, I love this shirt",
+  },
+];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function ProductDetails() {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
 
   return (
@@ -146,8 +175,8 @@ export default function ProductDetails() {
               <h2 className="sr-only">Product information</h2>
 
               <div className="flex space-x-5 items-center text-lg lg:text-xl text-gray-900 mt-6">
-                <p className="font-semibold">199</p>
-                <p className="opacity-50 line-through">211</p>
+                <p className="font-semibold">₹199</p>
+                <p className="opacity-50 line-through">₹211</p>
                 <p className="text-green-600 font-semibold">5% Off</p>
               </div>
 
@@ -266,48 +295,80 @@ export default function ProductDetails() {
         </section>
 
         {/* Rating and Reviews */}
-        <section>
-          <h1 className="font-semibold text-lg pb-4">Recent Review & Rating</h1>
 
-          <div className="border p-5">
-            <Grid container spacing={7}>
-              <Grid>
-                <div className="space-y-5">
-                  {[1, 1, 1].map((item) => (
-                    <ProductReviewCard />
-                  ))}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-10 p-6">
+          {/* Written Reviews */}
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              Recent Review & Rating
+            </h2>
+            <div className="space-y-6">
+              {reviews.map((review, idx) => (
+                <div key={idx} className="flex items-start space-x-4">
+                  <Avatar>{review.name[0]}</Avatar>
+                  <div>
+                    <p className="font-semibold">{review.name}</p>
+                    <p className="text-sm text-gray-500">{review.date}</p>
+                    <Rating
+                      name={`rating-${idx}`}
+                      value={review.rating}
+                      precision={0.5}
+                      readOnly
+                      size="small"
+                    />
+                    <p className="text-gray-700 mt-1 text-sm">
+                      {review.comment}
+                    </p>
+                  </div>
                 </div>
-              </Grid>
+              ))}
+            </div>
+          </div>
+          {/* Reviews Section */}
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              Product Reviews & Ratings
+            </h2>
 
-              <Grid item xs={5}>
-                <h1 className="text-xl font-semibold pb-1">Product Ratings</h1>
+            {/* Rating Summary */}
+            <div className="flex items-center space-x-2">
+              <Rating value={ratingStats.average} precision={0.5} readOnly />
+              <span className="text-sm text-gray-600">
+                {ratingStats.total.toLocaleString()} Ratings
+              </span>
+            </div>
 
-                <div className="flex items-center space-x-3">
-                  <Rating value={4.6} precision={0.5} readOnly />
-                  <p className="opacity-60">54,890 Ratings</p>
+            <div className="mt-6 space-y-4">
+              {Object.entries(ratingStats.breakdown).map(([label, percent]) => (
+                <div key={label}>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span>{label}</span>
+                    <span>{percent}%</span>
+                  </div>
+                  <LinearProgress
+                    variant="determinate"
+                    value={percent}
+                    sx={{
+                      height: 8,
+                      borderRadius: 4,
+                      backgroundColor: "#f0f0f0",
+                      "& .MuiLinearProgress-bar": {
+                        backgroundColor:
+                          label === "Excellent"
+                            ? "#22c55e"
+                            : label === "Very Good"
+                            ? "#16a34a"
+                            : label === "Good"
+                            ? "#3b82f6"
+                            : label === "Average"
+                            ? "#f97316"
+                            : "#ef4444",
+                      },
+                    }}
+                  />
                 </div>
-                <Box>
-                  <Grid
-                    container
-                    justifyContent="center"
-                    alignItems="center"
-                    gap={2}
-                  >
-                    <Grid item xs={2}>
-                      <p>Excellent</p>
-                    </Grid>
-
-                    <Grid item xs={7}>
-                      <LinearProgress
-                        variant="determinate"
-                        value={40}
-                        color="success"
-                      />
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Grid>
-            </Grid>
+              ))}
+            </div>
           </div>
         </section>
       </div>
