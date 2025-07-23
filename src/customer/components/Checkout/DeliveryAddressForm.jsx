@@ -1,79 +1,89 @@
-import { Box, Button, Container, Grid, TextField } from '@mui/material';
-import AddressCard from '../AddressCard/AddressCard';
+import { Box, Button, Grid } from "@mui/material";
+import { useState } from "react";
+import AddressCard from "../AddressCard/AddressCard";
+
 
 const DeliveryAddressForm = () => {
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        address: "",
+        city: "",
+        state: "",
+        zip: "",
+        phone: ""
+    });
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = new FormData(e.currentTarget);
-        const address = {
-            firstName: data.get("firstName"),
-            lastName: data.get("lastName"),
-            streetAddress: data.get("address"),
-            city: data.get("city"),
-            state: data.get("state"),
-            zipCode: data.get("zip"),
-            mobile: data.get("phoneNumber")
-        }
-        console.log("address", address);
+        console.log(formData)
+        setFormData({
+            firstName: "",
+            lastName: "",
+            address: "",
+            city: "",
+            state: "",
+            zip: "",
+            phone: ""
+        });
     };
 
     return (
-        <Container maxWidth="lg"> {/* ✅ Add this container to control layout */}
-            <Grid container spacing={4}>
-                <Grid item xs={12} lg={5} className="border rounded-e-md shadow-md h-[30.5rem] overflow-y-scroll">
+
+        <div style={{
+            margin: "20px"
+        }}>
+
+            <Grid className=" grid grid-cols-6 gap-2">
+                <div
+                    className="col-start-1 col-end-3 border rounded-e-md shadow-md  overflow-y-scroll">
                     <div className="p-5 py-7 border-b cursor-pointer">
                         <AddressCard />
                         <Button
-                            variant="contained"
+                            sx={{ mt: 2, bgcolor: "RGB(145 85 253)" }}
                             size="large"
-                            sx={{ mt: 2, bgcolor: 'rgb(145, 85, 253)' }}
+                            variant="contained"
                         >
                             Deliver Here
                         </Button>
-                    </div>
-                </Grid>
 
-                <Grid item xs={12} lg={7}>
-                    <Box className="border rounded-s-md shadow-md p-5">
-                        <form onSubmit={handleSubmit}>
-                            <Grid container spacing={3}>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField required id="firstName" name="firstName" label="First Name" fullWidth autoComplete="given-name" />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField required id="lastName" name="lastName" label="Last Name" fullWidth autoComplete="given-name" />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField required id="address" name="address" label="Address" fullWidth autoComplete="given-name" multiline rows={4} />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField required id="city" name="city" label="City" fullWidth autoComplete="given-name" />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField required id="state" name="state" label="State/Province/Region" fullWidth autoComplete="given-name" />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField required id="zip" name="zip" label="Zip Code/ Postal Code" fullWidth autoComplete="shipping postal-code" />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField required id="phoneNumber" name="phoneNumber" label="Phone Number" fullWidth autoComplete="given-name" />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button
-                                        variant="contained"
-                                        type="submit"
-                                        size="large"
-                                        sx={{ py: 1.5, mt: 2, bgcolor: 'rgb(145, 85, 253)' }}
-                                    >
-                                        Deliver Here
-                                    </Button>
-                                </Grid>
-                            </Grid>
+                    </div>
+                </div>
+
+
+                <div
+                    className="col-start-3 col-end-7 border rounded-e-md shadow-md">
+                    <Box sx={{ borderRadius: 2, p: 3 }}>
+                        <form action="" onSubmit={handleSubmit}>
+                            <Grid className="grid grid-cols-12 gap-2">
+                                <input type="text" style={{ height: "50px", paddingLeft: "10px", borderRadius: "5px", border: "2px solid #d7dbd7", color: "#3b3d3b" }} placeholder="First name* " name="firstName" required className="col-start-1 col-end-6 " value={formData.firstName} onChange={handleChange} />
+                                <input type="text" style={{ height: "50px", paddingLeft: "10px", borderRadius: "5px", border: "2px solid #d7dbd7", color: "#3b3d3b" }} placeholder="Last name*" name="lastName" required className="col-start-6 col-end-12 " value={formData.lastName} onChange={handleChange} />
+                                <textarea style={{ paddingLeft: "10px", borderRadius: "5px", border: "2px solid #d7dbd7", color: "#3b3d3b" }} className="col-start-1 col-end-12" rows={4} placeholder="Address*" name="address" value={formData.address} onChange={handleChange} />
+                                <input type="text" style={{ height: "50px", paddingLeft: "10px", borderRadius: "5px", border: "2px solid #d7dbd7", color: "#3b3d3b" }} required className="col-start-1 col-end-6 " placeholder="City*" name="city" value={formData.city} onChange={handleChange} />
+                                <input type="text" style={{ height: "50px", paddingLeft: "10px", borderRadius: "5px", border: "2px solid #d7dbd7", color: "#3b3d3b" }} required className="col-start-6 col-end-12 " placeholder="state/province/Region*" name="state" value={formData.state} onChange={handleChange} />
+                                <input type="text" style={{ height: "50px", paddingLeft: "10px", borderRadius: "5px", border: "2px solid #d7dbd7", color: "#3b3d3b" }} required className="col-start-1 col-end-6 " placeholder="Zip/Postal Code*" name="zip" value={formData.zip} onChange={handleChange} />
+                                <input type="tel" max={10} style={{ height: "50px", paddingLeft: "10px", borderRadius: "5px", border: "2px solid #d7dbd7", color: "#3b3d3b" }} required className="col-start-6 col-end-12 " placeholder="Phone Number*" name="phone" value={formData.phone} onChange={handleChange} />
+
+                                <Button className="col-span-3"
+                                    sx={{ mt: 2, bgcolor: "RGB(145 85 253)" }}
+                                    size="large"
+                                    variant="contained"
+                                >
+                                    Deliver Here
+                                </Button>                            </Grid>
                         </form>
                     </Box>
-                </Grid>
+
+
+
+                </div>
+
             </Grid>
-        </Container>
+        </div>
     );
 };
 

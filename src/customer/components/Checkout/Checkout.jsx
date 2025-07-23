@@ -12,11 +12,10 @@ import OrderSummary from './OrderSummary';
 const steps = ['Login', 'Delivery Address', 'Order Summary', 'Payment'];
 
 export default function Checkout() {
+    const [activeStep, setActiveStep] = React.useState(0);
     const location = useLocation();
     const querySearch = new URLSearchParams(location.search);
-
-    const step = Number(querySearch.get("step")) || 0;
-    const [activeStep, setActiveStep] = React.useState(step);
+    const step = querySearch.get("step");
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -26,7 +25,7 @@ export default function Checkout() {
     return (
         <div className='px-10 lg:px-20'>
             <Box sx={{ width: '100%' }}>
-                <Stepper activeStep={Number(step) || activeStep}>
+                <Stepper activeStep={step}>
                     {steps.map((label, index) => {
                         const stepProps = {};
                         const labelProps = {};
@@ -61,7 +60,7 @@ export default function Checkout() {
                         </Box>
 
                         <div>
-                            {Number(step) === 2 ? <DeliveryAddressForm /> : <OrderSummary />}
+                            {step == 2 ? <DeliveryAddressForm /> : <OrderSummary />}
                         </div>
                     </React.Fragment>
                 )}
