@@ -1,7 +1,7 @@
 import './App.css';
-import Checkout from './customer/components/Checkout/Checkout';
 import Footer from './customer/components/Footer/Footer';
 import Navigation from './customer/components/Navigation/Navigation';
+import Order from './customer/components/Order/Order';
 
 
 function App() {
@@ -14,7 +14,8 @@ function App() {
         {/* <Product /> */}
         {/* <ProductDetails /> */}
         {/* <Cart /> */}
-        <Checkout />
+        {/* <Checkout /> */}
+        <Order />
       </div>
       <Footer />
     </div>
